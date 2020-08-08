@@ -8,6 +8,9 @@ module Apps.Alias where
 battery :: String
 battery = "~/bin/batterywarn"
 
+compositor :: String
+compositor = "picom --config ~/.config/picom/picom.conf"
+
 bar :: String
 bar = "~/.config/polybar/launch.sh"
 

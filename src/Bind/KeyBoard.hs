@@ -22,7 +22,7 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
     customBindings =
       [
         -- launch terminal
-        ("M-<Retrun>", spawn (term options))
+        ("M-<Return>", spawn (term options))
         -- launch dmenu
       , ("M-d", spawn "rofi -show drun")
     

@@ -33,6 +33,7 @@ options = Options
              >> spawnOnce battery
              >> spawnOnce bar
              >> spawnOnce wallpaper
-             >> spawnOnce cursor
+             >> spawnOnce compositor
              >> spawnOnce xresource
+             >> spawnOnce cursor
   }
