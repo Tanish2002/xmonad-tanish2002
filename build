@@ -1,0 +1,39 @@
+#!/bin/sh
+clean () {
+  printf " Cleaning...."
+  find . \( -name '*.hi'\
+        -or -name '*.o'\
+        -or -name '*.errors'\
+        -or -name '*.log'\
+        -or -name 'cabal.project.local*'\
+        \) -type f -delete
+
+  rm -rf dist-newstyle/
+  rm -rf dist/
+
+  echo ".. Cleaned"
+}
+
+compile () {
+	rm -f install.log
+	touch install.log
+	cabal configure --enable-optimisation --enable-library-stripping >> install.log
+	cabal build >> install.log
+  	echo " Compiled"
+
+}
+
+install () {
+	sudo fd -tf 'xmonad' dist* -x mv -u {} /usr/local/bin/
+	echo " Installed"
+}
+
+main () {
+	clean >/dev/null
+	compile
+	install
+	clean
+	echo "Check install.log for build info"
+}
+
+main

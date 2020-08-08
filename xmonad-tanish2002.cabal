@@ -1,0 +1,28 @@
+cabal-version:       3.0
+
+name:                xmonad-tanish2002
+version:             0.1.0.0
+synopsis:            xmonad config
+author:              Tanish2002
+maintainer:          tanishkhare@gmail.com
+extra-source-files:  CHANGELOG.md
+
+
+executable xmonad
+  main-is:             xmonad.hs
+  other-modules:       Hooks.ManageHook
+                     , Apps.Alias
+                     , Bind.KeyBoard
+                     , Bind.Mouse
+                     , Hooks.EventHook
+                     , Hooks.LogHook
+                     , Config.Options
+                     , Container.Layout
+  build-depends:       Cabal
+                     , X11
+                     , base -any
+                     , containers >=0.6.0.1
+                     , xmonad >=0.15
+                     , xmonad-contrib >=0.16
+  hs-source-dirs:      src
+  default-language:    Haskell2010
