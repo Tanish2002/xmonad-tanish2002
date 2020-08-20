@@ -6,8 +6,6 @@ synopsis:            xmonad config
 author:              Tanish2002
 maintainer:          tanishkhare@gmail.com
 extra-source-files:  CHANGELOG.md
-
-
 executable xmonad
   main-is:             xmonad.hs
   other-modules:       Hooks.ManageHook

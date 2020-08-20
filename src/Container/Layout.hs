@@ -12,6 +12,7 @@ import XMonad.Layout.Spacing
 import XMonad.Layout.Tabbed
 import XMonad.Layout.Dwindle
 import Data.Maybe
+import XMonad.Layout.BinarySpacePartition
 import Control.Monad
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Layout.NoBorders
@@ -67,9 +68,13 @@ tall =
 
 tabs = named "Tabbed" $ tabbedBottom shrinkText tabTheme
 
+bsp =
+  named "Binary Partition"
+    . spacingses
+    $ emptyBSP
 
 -- layout --
-layout = fullscreenFull $  avoidStruts $ (dwindle ||| tabs ||| tall ||| Mirror tall ||| full)
+layout = fullscreenFull $  avoidStruts $ (bsp ||| tabs ||| dwindle ||| tall ||| Mirror tall ||| full)
 
 tabTheme :: Theme
 tabTheme = def { activeColor         = "#0f0f13"

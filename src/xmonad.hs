@@ -4,7 +4,7 @@ import XMonad
 
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
-import XMonad.Util.EZConfig(additionalKeysP)
+import XMonad.Util.EZConfig(additionalKeysP,removeKeysP)
 import XMonad.Layout.Fullscreen
 
 
@@ -49,4 +49,6 @@ defaults = def {
         handleEventHook    = events,
         logHook            = logger,
         startupHook        = autoload options >> addEWMHFullscreen
-    }`additionalKeysP` keyboard
+    }`removeKeysP`
+    [ "M-q" --, "M-something"
+    ]`additionalKeysP` keyboard
