@@ -24,6 +24,7 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
         ("M-<Return>", spawn (term options))
         -- launch dmenu
       , ("M-d", spawn "rofi -show drun")
+      , ("M-S-d", spawn "rofi -show run")
     
         -- launch rofi-emoji
       , ("M-e", spawn "$HOME/bin/rofi-emoji")
