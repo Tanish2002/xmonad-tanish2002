@@ -122,8 +122,8 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
     multimediaBindings =
       [
           ("<XF86AudioPlay>", spawn "$HOME/bin/mpvctl -t")
-        , ("<XF86AudioPrev>", spawn "pkill skroll ; $HOME/bin/mpvctl -n")
-        , ("<XF86AudioNext>", spawn "pkill skroll ; $HOME/bin/mpvctl -p")
+        , ("<XF86AudioPrev>", spawn "pkill skroll ; $HOME/bin/mpvctl -p")
+        , ("<XF86AudioNext>", spawn "pkill skroll ; $HOME/bin/mpvctl -n")
         , ("<XF86AudioMute>",   spawn "amixer set Master toggle")
         , ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%-")
         , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+")
