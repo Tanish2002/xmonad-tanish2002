@@ -25,3 +25,6 @@ xresource = "xrdb -remove && xrdb $HOME/xrdb/nier/nier"
 
 myterm :: String
 myterm = "tabbed -d -c -r 2 st -w ''"
+
+scratch :: String
+scratch = "st -n scratchpad"

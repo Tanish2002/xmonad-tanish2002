@@ -4,9 +4,9 @@ import XMonad
 
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
-import XMonad.Util.EZConfig(additionalKeysP,removeKeysP)
 import XMonad.Layout.Fullscreen
-
+import XMonad.Util.Run (safeSpawn)
+import XMonad.Util.EZConfig(additionalKeysP,removeKeysP)
 
 -- personal imports (./src/*)
 import Hooks.ManageHook
@@ -27,7 +27,18 @@ myFocusedBorderColor = "#ff0000"
 
 -- Main Function-------------------------------------------------------------------------------------------------------------------
 main :: IO ()
-main = xmonad . ewmh $ fullscreenSupport $ docks defaults
+main = do
+
+  -- pipes
+  safeSpawn "mkfifo" [
+    "/tmp/xmonad-layout-name"
+    ]
+
+  xmonad
+    . ewmh
+    $ fullscreenSupport
+    $ docks
+    $ defaults
 
 defaults = def {
       -- simple stuff

@@ -4,12 +4,10 @@ module Config.Options where
 import           XMonad
 
 import           XMonad.Hooks.SetWMName
-import           XMonad.Layout.Decoration
-import           XMonad.Util.Font
 import           XMonad.Util.SpawnOnce
 
 import           Apps.Alias
-
+import qualified XMonad.Prompt as P
 -- Types ------------------------------------------------------------------------
 data Options = Options
   { term       :: String
@@ -37,3 +35,14 @@ options = Options
              >> spawnOnce xresource
              >> spawnOnce cursor
   }
+promptConfig :: P.XPConfig
+promptConfig = P.def { P.fgColor           = "#f55966"
+                     , P.bgColor           = "#090909"
+                     , P.font              = "VictorMono Nerd Font Mono"
+                     , P.promptBorderWidth = 0
+                     , P.height            = 52
+                     , P.defaultText       = ""
+                     , P.historySize       = 0
+                     , P.maxComplRows      = Just 0
+                     , P.position          = P.Top
+                     }

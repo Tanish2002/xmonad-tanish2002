@@ -5,12 +5,13 @@ import XMonad
 
 import XMonad.Hooks.ManageDocks
 import XMonad.Layout.Fullscreen
+import XMonad.Layout.SimpleFloat
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Named
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Spacing
 import XMonad.Layout.Tabbed
-import XMonad.Layout.Dwindle
+import XMonad.Layout.Gaps
 import Data.Maybe
 import XMonad.Layout.BinarySpacePartition
 import Control.Monad
@@ -53,11 +54,9 @@ spacingses = spacingRaw False
              (Border 0 (d gs) 0 (l gs))
              True
 
+outerGaps    = 20
+myGaps       = gaps [(U, outerGaps), (R, outerGaps), (L, outerGaps), (D, outerGaps)]
 -- customised layouts
-dwindle =
-  named "Dwindle"
-  . spacingses
-  $ Dwindle R CW 1 1
 
 full = named "Fullscreen" $ noBorders (fullscreenFull Full)
 
@@ -66,29 +65,36 @@ tall =
     . spacingses
     $ ResizableTall 1 (2 / 100) (1 / 2) []
 
-tabs = named "Tabbed" $ tabbedBottom shrinkText tabTheme
+tabs = named "Tabbed"
+  . myGaps
+  $ tabbed shrinkText tabTheme
 
 bsp =
   named "Binary Partition"
     . spacingses
     $ emptyBSP
 
+float' = named "Float" $ simpleFloat' shrinkText emptyTheme
+
 -- layout --
-layout = fullscreenFull $  avoidStruts $ (bsp ||| tabs ||| dwindle ||| tall ||| Mirror tall ||| full)
+layout = fullscreenFull $  avoidStruts $ (bsp ||| tabs ||| float' ||| tall ||| Mirror tall ||| full)
 
 tabTheme :: Theme
-tabTheme = def { activeColor         = "#0f0f13"
+tabTheme = def { activeColor         = "#090909"
                , activeBorderColor   = "#000000"
-               , activeTextColor     = "#daddee"
-               , inactiveColor       = "#202026"
+               , activeTextColor     = "#F2A5B7"
+               , inactiveColor       = "#F2A5B7"
                , inactiveBorderColor = "#000000"
-               , inactiveTextColor   = "#a6a9b7"
-               , urgentColor         = "#0f0f13"
+               , inactiveTextColor   = "#090909"
+               , urgentColor         = "#090909"
                , urgentBorderColor   = "#000000"
-               , urgentTextColor     = "daddee"
-               , fontName            = "FuraCode Nerd Font Mono"
+               , urgentTextColor     = "#F2A5B7"
+               , fontName            = "VictorMono Nerd Font Mono"
                , decoHeight          = 52
                }
+
+emptyTheme :: Theme
+emptyTheme = def { decoHeight = 0, decoWidth = 0 }
 
 addNETSupported :: Atom -> X ()
 addNETSupported x   = withDisplay $ \dpy -> do

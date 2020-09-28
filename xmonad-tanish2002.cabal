@@ -10,6 +10,7 @@ executable xmonad
   main-is:             xmonad.hs
   other-modules:       Hooks.ManageHook
                      , Apps.Alias
+                     , Apps.Scratchpad
                      , Bind.KeyBoard
                      , Bind.Mouse
                      , Hooks.EventHook

@@ -6,13 +6,12 @@ where
 -- Imports --------------------------------------------------------------------
 import XMonad
 import qualified XMonad.StackSet as W
-import qualified Data.Map        as M
-import XMonad.Util.EZConfig(additionalKeysP)
 import XMonad.Hooks.ManageDocks
 import System.Exit
-
+import XMonad.Util.Scratchpad
 import Config.Options
-
+import Apps.Alias
+import qualified XMonad.Actions.Search         as S
 -- Bindings --------------------------------------------------------------------
 
 keyboard :: [(String, X ())]
@@ -104,8 +103,15 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
 
         -- Restart xmonad
         , ("M-S-r", spawn "xmonad --recompile; xmonad --restart")
+
+        -- Spawn Scratchpad
+        , ("M-`", scratchpadSpawnActionCustom scratch)
  
         ]
+      ++ [ ("M-\\ " ++ k, S.promptSearch promptConfig f)
+         | (k, f) <- searchList
+         ]
+      
       ++
       
       [("M" ++ m ++ ('-':k:[]) , windows $ f i)
@@ -125,3 +131,7 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
         , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 10")
         , ("<Print>", spawn "$HOME/bin/screenshot-menu.sh")
         ]
+
+-- search engine submap
+searchList :: [(String, S.SearchEngine)]
+searchList = [("g", S.duckduckgo), ("d", S.dictionary), ("w", S.wikipedia), ("y", S.youtube)]

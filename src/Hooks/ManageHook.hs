@@ -9,6 +9,7 @@ import           XMonad
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.Fullscreen
+import Apps.Scratchpad
 
 -- ManageHook --------------------------------------------------------------------
 manager :: ManageHook
@@ -23,3 +24,4 @@ manager = composeAll
     , isFullscreen --> doFullFloat
     , fullscreenManageHook
     , insertPosition Below Newer]
+    <+> manageScratchpad
