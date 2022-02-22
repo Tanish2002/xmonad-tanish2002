@@ -1,8 +1,12 @@
+{-# LANGUAGE MultiParamTypeClasses, TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleContexts #-}
 module Container.Layout where
 
 -- Imports --------------------------------------------------------------------
 import XMonad                  
-
+import Data.Maybe
+import Control.Monad
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.SimpleFloat
@@ -11,12 +15,14 @@ import XMonad.Layout.Named
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Spacing
 import XMonad.Layout.Tabbed
+import XMonad.Layout.MultiToggle
 import XMonad.Layout.Gaps
-import Data.Maybe
+import XMonad.Layout.Simplest (Simplest(..))
 import XMonad.Layout.BinarySpacePartition
-import Control.Monad
-import XMonad.Hooks.EwmhDesktops
 import XMonad.Layout.NoBorders
+import XMonad.Layout.SubLayouts
+import XMonad.Layout.WindowNavigation
+import XMonad.Layout.BoringWindows
 
 import XMonad.StackSet               as W
 
@@ -65,7 +71,7 @@ tall =
     . spacingses
     $ ResizableTall 1 (2 / 100) (1 / 2) []
 
-tabs = named "Tabbed"
+tabs = named "Tabs"
   . myGaps
   $ tabbed shrinkText tabTheme
 
@@ -74,11 +80,38 @@ bsp =
     . spacingses
     $ emptyBSP
 
+
 float' = named "Float" $ simpleFloat' shrinkText emptyTheme
 
 -- layout --
-layout = fullscreenFull $  avoidStruts $ (bsp ||| tabs ||| float' ||| tall ||| Mirror tall ||| full)
+layout = fullscreenFull
+  $ mkToggle (ENABLETABS ?? EOT)
+  $ windowNavigation
+  $ boringWindows
+  $ avoidStruts
+  $ (bsp ||| tabs ||| float' ||| tall ||| Mirror tall ||| full)
 
+addNETSupported :: Atom -> X ()
+addNETSupported x   = withDisplay $ \dpy -> do
+    r               <- asks theRoot
+    a_NET_SUPPORTED <- getAtom "_NET_SUPPORTED"
+    a               <- getAtom "ATOM"
+    liftIO $ do
+       sup <- (join . maybeToList) <$> getWindowProperty32 dpy a_NET_SUPPORTED r
+       when (fromIntegral x `notElem` sup) $
+         changeProperty32 dpy r a_NET_SUPPORTED a propModeAppend [fromIntegral x]
+
+addEWMHFullscreen :: X ()
+addEWMHFullscreen   = do
+    wms <- getAtom "_NET_WM_STATE"
+    wfs <- getAtom "_NET_WM_STATE_FULLSCREEN"
+    mapM_ addNETSupported [wms, wfs]
+
+--Tabs Stuff
+enableTabs x = addTabs shrinkText tabTheme $ subLayout [] Simplest x
+data ENABLETABS = ENABLETABS deriving (Read, Show, Eq, Typeable)
+instance Transformer ENABLETABS Window where
+     transform ENABLETABS x k = k (enableTabs x) (const x)
 tabTheme :: Theme
 tabTheme = def { activeColor         = "#090909"
                , activeBorderColor   = "#000000"
@@ -96,18 +129,3 @@ tabTheme = def { activeColor         = "#090909"
 emptyTheme :: Theme
 emptyTheme = def { decoHeight = 0, decoWidth = 0 }
 
-addNETSupported :: Atom -> X ()
-addNETSupported x   = withDisplay $ \dpy -> do
-    r               <- asks theRoot
-    a_NET_SUPPORTED <- getAtom "_NET_SUPPORTED"
-    a               <- getAtom "ATOM"
-    liftIO $ do
-       sup <- (join . maybeToList) <$> getWindowProperty32 dpy a_NET_SUPPORTED r
-       when (fromIntegral x `notElem` sup) $
-         changeProperty32 dpy r a_NET_SUPPORTED a propModeAppend [fromIntegral x]
-
-addEWMHFullscreen :: X ()
-addEWMHFullscreen   = do
-    wms <- getAtom "_NET_WM_STATE"
-    wfs <- getAtom "_NET_WM_STATE_FULLSCREEN"
-    mapM_ addNETSupported [wms, wfs]

@@ -30,6 +30,9 @@ main :: IO ()
 main = do
 
   -- pipes
+  safeSpawn "rm" [
+    "/tmp/xmonad-layout-name"
+    ]
   safeSpawn "mkfifo" [
     "/tmp/xmonad-layout-name"
     ]

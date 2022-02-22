@@ -11,6 +11,11 @@ import System.Exit
 import XMonad.Util.Scratchpad
 import Config.Options
 import Apps.Alias
+import Container.Layout
+import XMonad.Layout.SubLayouts
+import XMonad.Layout.MultiToggle
+import XMonad.Prompt
+import XMonad.Prompt.Theme
 import qualified XMonad.Actions.Search         as S
 -- Bindings --------------------------------------------------------------------
 
@@ -34,6 +39,9 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
     
         -- launch rofi-clip
       , ("M-c", spawn "$HOME/bin/rofi-clip")
+      
+      , ("M-q", themePrompt def)
+ 
       ]
 
     wmBindings :: [(String, X())]
@@ -76,6 +84,17 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
         , ("M-S-k", windows W.swapUp    )
         , ("M-S-<Up>", windows W.swapUp    )
 
+        -- Tabbed Layout Control
+        , ("M1-t",            sendMessage $ Toggle ENABLETABS)
+
+        , ("M1-S-<Left>",     sendMessage $ pullGroup L)
+        , ("M1-S-<Down>",     sendMessage $ pullGroup D)
+        , ("M1-S-<Up>",       sendMessage $ pullGroup U)
+        , ("M1-S-<Right>",    sendMessage $ pullGroup R)
+
+        , ("M1-m",            withFocused (sendMessage . MergeAll))
+        , ("M1-u",            withFocused (sendMessage . UnMerge))
+
         -- Shrink the master area
         , ("M-h", sendMessage Shrink)
         , ("M-<Left>", sendMessage Shrink)
@@ -97,18 +116,20 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
         -- Use this binding with avoidStruts from Hooks.ManageDocks.
         -- See also the statusBar function from Hooks.DynamicLog.
         --
-        , ("M-b", sendMessage ToggleStruts)
+        , ("M-b", do sendMessage ToggleStruts
+                     spawn "polybar-msg cmd toggle")
 
         -- Quit xmonad
-        , ("M-S-<Escape>", io (exitWith ExitSuccess))
+        , ("M-S-<Escape>", spawn "pm")
 
         -- Restart xmonad
-        , ("M-S-r", spawn "xmonad --recompile; xmonad --restart")
+        , ("M-S-r", spawn "xmonad --restart")
 
         -- Spawn Scratchpad
         , ("M-`", scratchpadSpawnActionCustom scratch)
  
         ]
+
       ++ [ ("M-\\ " ++ k, S.promptSearch promptConfig f)
          | (k, f) <- searchList
          ]

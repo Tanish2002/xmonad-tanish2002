@@ -21,10 +21,10 @@ cursor :: String
 cursor = "xsetroot -cursor_name left_ptr &"
 
 xresource :: String
-xresource = "xrdb -remove && xrdb $HOME/xrdb/nier/nier"
+xresource = "xrdb -remove && xrdb $HOME/xrdb/cute/cute"
 
 myterm :: String
-myterm = "tabbed -d -c -r 2 st -w ''"
+myterm = "st"
 
 scratch :: String
 scratch = "st -n scratchpad"
