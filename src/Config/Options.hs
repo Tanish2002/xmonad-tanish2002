@@ -32,7 +32,6 @@ options = Options
              >> spawnOnce bar
              >> spawnOnce wallpaper
              >> spawnOnce compositor
-             >> spawnOnce xresource
              >> spawnOnce cursor
   }
 promptConfig :: P.XPConfig
