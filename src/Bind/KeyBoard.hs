@@ -149,8 +149,8 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
         , ("<XF86AudioMute>",   spawn "amixer set Master toggle")
         , ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%-")
         , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+")
-        , ("<XF86MonBrightnessUp>", spawn "xbacklight -inc 10")
-        , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 10")
+        , ("<XF86MonBrightnessUp>", spawn "light -A 10")
+        , ("<XF86MonBrightnessDown>", spawn "light -U 10")
         , ("<Print>", spawn "$HOME/bin/screenshot-menu.sh")
         ]
 
