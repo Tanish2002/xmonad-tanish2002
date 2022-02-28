@@ -10,6 +10,7 @@ import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.Fullscreen
 import Apps.Scratchpad
+import qualified XMonad.StackSet as W
 
 -- ManageHook --------------------------------------------------------------------
 manager :: ManageHook
@@ -22,6 +23,7 @@ manager = composeAll
     , className =? "discord"        --> doShift "\xfb6e"
     , className =? "Firefox"        --> doShift "\xf269"
     , isFullscreen --> doFullFloat
+    , isDialog        --> doF W.swapUp
     , fullscreenManageHook
     , insertPosition Below Newer]
     <+> manageScratchpad
