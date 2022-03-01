@@ -20,6 +20,9 @@ wallpaper = "~/.fehbg"
 cursor :: String
 cursor = "xsetroot -cursor_name left_ptr &"
 
+xresource :: String
+xresource = "xrdb -remove && xrdb $HOME/xrdb/cute/cute"
+
 myterm :: String
 myterm = "st"
 
