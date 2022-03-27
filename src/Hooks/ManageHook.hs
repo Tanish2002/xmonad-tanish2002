@@ -22,8 +22,10 @@ manager = composeAll
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "discord"        --> doShift "\xfb6e"
     , className =? "Firefox"        --> doShift "\xf269"
-    , isFullscreen --> doFullFloat
-    , isDialog        --> doF W.swapUp
+    , className =? "postman"        --> doShift "\xf044"
+    , className =? "code"           --> doShift "\xe795"
+    , isFullscreen                  --> doFullFloat
+    , isDialog                      --> doF W.swapUp
     , fullscreenManageHook
     , insertPosition Below Newer]
     <+> manageScratchpad
