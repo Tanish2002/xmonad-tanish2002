@@ -21,7 +21,7 @@ manager = composeAll
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "discord"        --> doShift "\xfb6e"
-    , className =? "Firefox"        --> doShift "\xf269"
+    , className =? "firefox"        --> doShift "\xf269"
     , className =? "postman"        --> doShift "\xf044"
     , className =? "code"           --> doShift "\xe795"
     , isFullscreen                  --> doFullFloat
