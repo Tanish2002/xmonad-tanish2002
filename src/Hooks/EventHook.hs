@@ -12,6 +12,4 @@ import Data.Monoid
 -- EventHook --------------------------------------------------------------------
 events :: Event -> X All
 events = mconcat
-  [ FS.fullscreenEventHook
-   ,EWMH.fullscreenEventHook
-  ]
+  [ FS.fullscreenEventHook ]

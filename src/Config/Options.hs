@@ -5,6 +5,8 @@ import           XMonad
 
 import           XMonad.Hooks.SetWMName
 import           XMonad.Util.SpawnOnce
+import           XMonad.Util.NamedScratchpad
+import           XMonad.Util.WorkspaceCompare
 
 import           Apps.Alias
 import qualified XMonad.Prompt as P
@@ -32,8 +34,9 @@ options = Options
              >> spawnOnce bar
              >> spawnOnce wallpaper
              >> spawnOnce compositor
-	     >> spawnOnce xresource
+             >> spawnOnce xresource
              >> spawnOnce cursor
+             >> spawnOnce "flashfocus"
   }
 promptConfig :: P.XPConfig
 promptConfig = P.def { P.fgColor           = "#f55966"
@@ -46,3 +49,5 @@ promptConfig = P.def { P.fgColor           = "#f55966"
                      , P.maxComplRows      = Just 0
                      , P.position          = P.Top
                      }
+scratchPadFilter :: WorkspaceSort
+scratchPadFilter = filterOutWs [scratchpadWorkspaceTag]

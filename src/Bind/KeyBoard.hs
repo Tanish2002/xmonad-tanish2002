@@ -12,15 +12,19 @@ import XMonad.Util.Scratchpad
 import Config.Options
 import Apps.Alias
 import Container.Layout
+import XMonad.Actions.FloatKeys
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.MultiToggle
 import XMonad.Prompt
 import XMonad.Prompt.Theme
+import Data.Ratio
 import qualified XMonad.Actions.Search         as S
+import qualified Data.Map        as M
+import Data.Maybe (Maybe, isNothing, fromJust)
 -- Bindings --------------------------------------------------------------------
 
 keyboard :: [(String, X ())]
-keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspaceBindings ]
+keyboard = concat [ customBindings, wmBindings, multimediaBindings]
   where
     customBindings :: [(String, X ())]
     customBindings =
@@ -53,14 +57,13 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
         -- Rotate through the available layout algorithms
         , ("M-<Space>", sendMessage NextLayout)
 
-        --  Reset the layouts on the current workspace to default
-        -- , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)
-
         -- Resize viewed windows to the correct size
-        , ("M-n", refresh)
+        , ("M-n", refresh
+               >> spawn "flash_window")
 
-        -- Move focus to the next window
+        -- Move focus to the next/previous window
         , ("M-<Tab>", windows W.focusDown)
+        , ("M-S-<Tab>", windows W.focusUp)
 
         -- Move focus to the next window
         , ("M-j", windows W.focusDown)
@@ -84,6 +87,14 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
         , ("M-S-k", windows W.swapUp    )
         , ("M-S-<Up>", windows W.swapUp    )
 
+        -- Float Window Control
+        , ("M1-w",  withFocused (keysMoveWindow (0, -10)))
+        , ("M1-a",  withFocused (keysMoveWindow (-10, 0)))
+        , ("M1-s",  withFocused (keysMoveWindow (0, 10)))
+        , ("M1-d",  withFocused (keysMoveWindow (10, 0)))
+        , ("M1-S-w",   withFocused (keysResizeWindow (10,10) (1%2,1%2)))
+        , ("M1-S-s",   withFocused (keysResizeWindow (-10, -10) (1%2, 1%2)))
+
         -- Tabbed Layout Control
         , ("M1-t",            sendMessage $ Toggle ENABLETABS)
 
@@ -103,9 +114,9 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
         , ("M-l", sendMessage Expand)
         , ("M-<Right>", sendMessage Expand)
 
-        -- Push window back into tiling
-        , ("M-t", withFocused $ windows . W.sink)
-        
+        -- Toggle between Float and Tile
+        , ("M-t", withFocused toggleFloat)
+
         -- Increment the number of windows in the master area
         , ("M-,", sendMessage (IncMasterN 1))
 
@@ -157,3 +168,27 @@ keyboard = concat [ customBindings, wmBindings, multimediaBindings] --, workspac
 -- search engine submap
 searchList :: [(String, S.SearchEngine)]
 searchList = [("g", S.duckduckgo), ("d", S.dictionary), ("w", S.wikipedia), ("y", S.youtube)]
+
+skipFloating :: (Eq a, Ord a) => W.StackSet i l a s sd -> (W.StackSet i l a s sd -> W.StackSet i l a s sd) -> W.StackSet i l a s sd
+skipFloating stacks f
+    | isNothing curr = stacks -- short circuit if there is no currently focused window
+    | otherwise = skipFloatingR stacks curr f
+  where curr = W.peek stacks
+
+skipFloatingR :: (Eq a, Ord a) => W.StackSet i l a s sd -> (Maybe a) -> (W.StackSet i l a s sd -> W.StackSet i l a s sd) -> W.StackSet i l a s sd
+skipFloatingR stacks startWindow f
+    | isNothing nextWindow = stacks -- next window is nothing return current stack set
+    | nextWindow == startWindow = newStacks -- if next window is the starting window then return the new stack set
+    | M.notMember (fromJust nextWindow) (W.floating stacks) = newStacks -- if next window is not a floating window return the new stack set
+    | otherwise = skipFloatingR newStacks startWindow f -- the next window is a floating window so keep recursing (looking)
+  where newStacks = f stacks
+        nextWindow = W.peek newStacks
+
+toggleFloat :: Window -> X ()
+toggleFloat w = windows (\s -> if M.member w (W.floating s)
+                          then W.sink w s
+                          else (W.float w (W.RationalRect (1/3) (1/4) (1/2) (4/5)) s))
+isFloat :: Window -> X Bool
+isFloat w = do
+  fls <- withWindowSet (return . W.floating)
+  return (w `M.member` fls)

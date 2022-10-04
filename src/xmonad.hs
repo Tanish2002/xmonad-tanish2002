@@ -30,14 +30,13 @@ main :: IO ()
 main = do
 
   -- pipes
-  safeSpawn "rm" [
-    "/tmp/xmonad-layout-name"
-    ]
   safeSpawn "mkfifo" [
     "/tmp/xmonad-layout-name"
     ]
 
   xmonad
+    . addEwmhWorkspaceSort (pure scratchPadFilter)
+    . ewmhFullscreen
     . ewmh
     $ fullscreenSupport
     $ docks

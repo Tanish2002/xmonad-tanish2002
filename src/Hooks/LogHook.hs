@@ -32,7 +32,7 @@ layoutParseName s | s == "Float"                   = mkLayoutStr "#b789cd" "+++ 
                   | otherwise                      = s -- fallback for changes in C.Layout
 -- LogHook --------------------------------------------------------------------
 logger :: X ()
-logger = layoutLogHook <+> ewmhDesktopsLogHookCustom scratchpadFilterOutWorkspace
+logger = layoutLogHook
 
 layoutLogHook :: X ()
 layoutLogHook = withWindowSet $ \ws -> do
