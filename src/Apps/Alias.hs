@@ -2,7 +2,6 @@
 -- This is here so that I can change the programs behind things without worry
 -- about propogating all the changes. All functions external to haskell should
 -- be specified here.
-
 module Apps.Alias where
 
 battery :: String
@@ -26,5 +25,3 @@ xresource = "xrdb -remove && xrdb $HOME/xrdb/cute/cute"
 myterm :: String
 myterm = "st"
 
-scratch :: String
-scratch = "st -n scratchpad"

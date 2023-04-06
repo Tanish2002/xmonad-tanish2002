@@ -1,15 +1,19 @@
 module Hooks.EventHook
-  ( events
+  ( events,
   )
 where
 
 -- Imports --------------------------------------------------------------------
+
+import Data.Monoid (All)
 import XMonad
-import XMonad.Hooks.EwmhDesktops as EWMH
+import XMonad.Hooks.WindowSwallowing (swallowEventHook)
 import XMonad.Layout.Fullscreen as FS
-import Data.Monoid
 
 -- EventHook --------------------------------------------------------------------
 events :: Event -> X All
-events = mconcat
-  [ FS.fullscreenEventHook ]
+events =
+  mconcat
+    [ FS.fullscreenEventHook,
+      swallowEventHook (className =? "St") (return True)
+    ]

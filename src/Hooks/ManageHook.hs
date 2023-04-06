@@ -1,28 +1,31 @@
 module Hooks.ManageHook
-  ( manager
+  ( manager,
   )
 where
 
 -- Imports --------------------------------------------------------------------
-import           XMonad
 
+import Apps.Scratchpad
+import XMonad
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.Fullscreen
-import Apps.Scratchpad
-import qualified XMonad.StackSet as W
+import qualified XMonad.StackSet as W (swapUp)
+import XMonad.Util.NamedScratchpad (namedScratchpadManageHook)
 
 -- ManageHook --------------------------------------------------------------------
 manager :: ManageHook
-manager = insertPosition Below Newer
-    <+> manageScratchpad
+manager =
+  insertPosition Below Newer
+    <+> namedScratchpadManageHook scratchpads
     <+> composeAll
-    [ isDialog                      --> doF W.swapUp
-    , className =? "MPlayer"        --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , className =? "discord"        --> doShift "\xfb6e"
-    , className =? "firefox"        --> doShift "\xf269"
-    , className =? "postman"        --> doShift "\xf044"
-    , className =? "code"           --> doShift "\xe795"
-    , isFullscreen                  --> doFullFloat
-    , fullscreenManageHook ]
+      [ isDialog --> doF W.swapUp,
+        className =? "MPlayer" --> doFloat,
+        className =? "Gimp" --> doFloat,
+        className =? "discord" --> doShift "\xfb6e",
+        className =? "firefox" --> doShift "\xf269",
+        className =? "postman" --> doShift "\xf044",
+        className =? "code" --> doShift "\xe795",
+        isFullscreen --> doFullFloat,
+        fullscreenManageHook
+      ]
