@@ -70,7 +70,6 @@ keyboard = concat [customBindings, wmBindings, multimediaBindings]
           ("M-S-<Return>", windows W.swapMaster)
         , -- Swap the focused window with the next window
           ("M-S-j", windows W.swapDown)
-        , ("M-S-<Down>", windows W.swapDown)
         , -- Swap the focused window with the previous window
           ("M-S-k", windows W.swapUp)
         , -- -- Directional navigation of windows
