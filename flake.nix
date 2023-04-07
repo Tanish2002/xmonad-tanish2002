@@ -17,8 +17,9 @@
         '';
       });
       devShell.x86_64-linux = pkgs.haskellPackages.shellFor {
-        packages = p: [ self.packages.x86_64-linux.default ];
+        packages = _: [ self.packages.x86_64-linux.default ];
         buildInputs = with pkgs; [
+          haskellPackages.fourmolu
           haskell-language-server
           ghcid
           cabal-install

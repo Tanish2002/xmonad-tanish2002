@@ -24,4 +24,3 @@ xresource = "xrdb -remove && xrdb $HOME/xrdb/cute/cute"
 
 myterm :: String
 myterm = "st"
-

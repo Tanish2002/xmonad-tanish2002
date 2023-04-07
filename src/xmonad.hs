@@ -36,6 +36,7 @@ main = do
     . addEwmhWorkspaceSort (pure scratchPadFilter)
     . ewmhFullscreen
     . ewmh
+    . navigate
     $ fullscreenSupport $
       docks
         defaults

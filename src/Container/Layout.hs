@@ -9,6 +9,7 @@ module Container.Layout where
 import Control.Monad
 import Data.Maybe
 import XMonad
+import XMonad.Actions.Navigation2D (additionalNav2DKeysP, hybridOf, layoutNavigation, lineNavigation, navigation2DP, screenGo, sideNavigation, windowGo, windowSwap, withNavigation2DConfig)
 import XMonad.Hooks.ManageDocks
 import XMonad.Layout.BinarySpacePartition
 import XMonad.Layout.BoringWindows
@@ -110,6 +111,17 @@ addEWMHFullscreen = do
   wms <- getAtom "_NET_WM_STATE"
   wfs <- getAtom "_NET_WM_STATE_FULLSCREEN"
   mapM_ addNETSupported [wms, wfs]
+
+navigate =
+  withNavigation2DConfig
+    def
+      { layoutNavigation =
+          [ ("Tabs", hybridOf sideNavigation lineNavigation),
+            ("Tall", hybridOf sideNavigation lineNavigation),
+            ("BSP", hybridOf sideNavigation lineNavigation),
+            ("Binary Partition", hybridOf sideNavigation lineNavigation)
+          ]
+      }
 
 --Tabs Stuff
 enableTabs x = addTabs shrinkText tabTheme $ subLayout [] Simplest x
