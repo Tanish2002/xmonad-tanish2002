@@ -7,12 +7,12 @@ where
 
 import Apps.Scratchpad
 import XMonad
+import XMonad.Hooks.BorderPerWindow (defineBorderWidth)
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.Fullscreen
 import qualified XMonad.StackSet as W (swapUp)
 import XMonad.Util.NamedScratchpad (namedScratchpadManageHook)
-
 -- ManageHook --------------------------------------------------------------------
 manager :: ManageHook
 manager =
@@ -27,5 +27,6 @@ manager =
         className =? "postman" --> doShift "\xf044",
         className =? "code" --> doShift "\xe795",
         isFullscreen --> doFullFloat,
+        title =? "st"  --> defineBorderWidth 45,
         fullscreenManageHook
       ]

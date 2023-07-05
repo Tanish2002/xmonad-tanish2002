@@ -10,6 +10,7 @@ import Hooks.EventHook
 import Hooks.LogHook
 import Hooks.ManageHook
 import XMonad
+import XMonad.Hooks.BorderPerWindow (actionQueue)
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Layout.Fullscreen
@@ -18,10 +19,10 @@ import XMonad.Util.Run (safeSpawn)
 
 -- @TODO Make Config for Theming------------------------------------------------------------------------------------------------------
 myNormalBorderColor :: [Char]
-myNormalBorderColor = "#dddddd"
+myNormalBorderColor = "#0f0f12"
 
 myFocusedBorderColor :: [Char]
-myFocusedBorderColor = "#ff0000"
+myFocusedBorderColor = "#0f0f12"
 
 -- Main Function-------------------------------------------------------------------------------------------------------------------
 main :: IO ()
@@ -37,6 +38,7 @@ main = do
     . ewmhFullscreen
     . ewmh
     . navigate
+    . actionQueue
     $ fullscreenSupport $
       docks
         defaults
