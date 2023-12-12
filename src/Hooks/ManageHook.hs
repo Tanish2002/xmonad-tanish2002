@@ -27,6 +27,6 @@ manager =
         className =? "postman" --> doShift "\xf044",
         className =? "code" --> doShift "\xe795",
         isFullscreen --> doFullFloat,
-        title =? "st"  --> defineBorderWidth 45,
+        (title =? "st" <&&> title =? "zsh"  --> defineBorderWidth 45),
         fullscreenManageHook
       ]

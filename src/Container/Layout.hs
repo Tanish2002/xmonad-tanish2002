@@ -134,12 +134,12 @@ instance Transformer ENABLETABS Window where
 tabTheme :: Theme
 tabTheme =
   def
-    { activeColor = "#090909",
-      activeBorderColor = "#000000",
+    { activeColor = "#0F0F12",
+      activeBorderColor = "#0F0F12",
       activeTextColor = "#F2A5B7",
       inactiveColor = "#F2A5B7",
-      inactiveBorderColor = "#000000",
-      inactiveTextColor = "#090909",
+      inactiveBorderColor = "#F2A5B7",
+      inactiveTextColor = "#0F0F12",
       urgentColor = "#090909",
       urgentBorderColor = "#000000",
       urgentTextColor = "#F2A5B7",

@@ -19,7 +19,8 @@ events =
   mconcat
     [ FS.fullscreenEventHook,
       swallowEventHook (title =? "st") (return True),
-      (dynamicTitle <> windowCloseHook) (title >>= \t -> defineBorderWidth (if t == "st" then 45 else 0))
+      -- (dynamicTitle <> windowCloseHook) (title >>= \t -> defineBorderWidth (if t == "st" then 45 else 0))
+      (dynamicPropertyChange "WM_NAME" (title >>= \t -> defineBorderWidth(if t == "st" || t == "zsh" then 45 else 0)))
     ]
 
 windowCloseHook :: ManageHook -> Event -> X All
